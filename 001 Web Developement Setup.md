@@ -89,10 +89,64 @@ You will see like :
 
 ```conf
 #LoadModule mpm_prefork_module libexec/apache2/mod_mpm_prefork.so
-``
+```
 
 and Uncomment it
 
 ```conf
 LoadModule mpm_prefork_module libexec/apache2/mod_mpm_prefork.so
+```
+and start apache server
+
+```bash
+httpd -v # Proof For Server 
+killall httpd; httpd # restart server
+apachectl start # to start apache server
+apachectl stop #to stop server
+apachectl restart #to restart when edited config files
+```
+Note: If you get servername error open `httpd.conf` file and search `ServerName` and edit loke below :
+
+```bash
+ServerName localhost:8080
+```
+
+11. Open Browser and search url `localhost:8080` you will see `It work!` that is default!
+12. We will cchange Directory of DocumentRoot
+
+13. Stop Server first  `apachectl stop`
+
+14. If you are at `/home` you can type line 6,7,8 again.
+15. Search `DocumentRoot` and change default to following
+
+```bash
+DocumentRoot "/sdcard/htdocs"
+<Directory "/sdcard/htdocs">
+```
+
+16. Create Dir under Internal Storage
+
+```bash
+cd
+cd /sdcard/
+mkdir htdocs
+```
+
+17. Open htdocs from text editor!
+18. Create php file and test it.
+19. For Testing!
+
+```bash
+#under /sdcard/htdocs/
+echo "<?php echo 'Hello World!' ?>" >>> index.php 
+```
+
+20.Start apache server `apachectl start` and open browser and check it work or not!
+
+Note: You can change DocumentRoot directory what you like but don't add `/` end of dir root that will crash your server!!!
+
+21. Enable apache rewrite module by searching `rewrite` at `httpd.conf` and uncomment it!
+
+```conf
+LoadModule rewrite_module libexec/apache2/mod_rewrite.so
 ```
