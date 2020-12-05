@@ -1,4 +1,4 @@
-# PHP Setup In Linuxx
+# PHP Setup In Linux
  This is set up guide for WEB DEVELOPEMENT!
  
 # Platforms
