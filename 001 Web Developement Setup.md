@@ -227,13 +227,352 @@ kill $(ps aux | grep '[m]ysql' | awk '{print $2}')
 ```
 Note : If you want to stop other process change `[m]sql` to `[p]hp` if PHP! by [Easy Engine](https://easyengine.io/tutorials/linux/kill-all-processes/?amp)
 
-and If you start again and by stopping `stop mysql` you need to run 'mysqld_safe` .
+and If you start again and by stopping `stop mysql` you need to run `mysqld_safe` .
 Open new session and type `mysql` for Mysql CLI.
 
 # <a name="mysql-priv">Create MYSQL PRIVILIAGE</a>
 
 This setup is to access database from PHP 'username'.
 
+# Ubuntu Linux
+Installtion should done it yourself!
+
+## UBTNU Installtion In Termux (skip on linux)
+
+Create new file `ubuntu.sh` and  `grant it` by `chmod +x ubtnu.sh
+Copy following and run `./ubuntu.sh` and wait some mimute. ⏱️
+When complete  run `./ubuntu.sh` and autologin to ubuntu like :
+
+```bash
+root@localhost:~# #Example When Loged In
+```
+run 
+
+```bash
+pkg install wget openssl-tool proot -y && hash -r && wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Ubuntu/ubuntu.sh && bash ubuntu.sh
+./start-ubuntu.sh
+```
+
+or
+
+Copy Below and run:
+```bash
+#!/data/data/com.termux/files/usr/bin/bash
+folder=ubuntu-fs
+if [ -d "$folder" ]; then
+	first=1
+	echo "skipping downloading"
+fi
+tarball="ubuntu-rootfs.tar.xz"
+if [ "$first" != 1 ];then
+	if [ ! -f $tarball ]; then
+		echo "Download Rootfs, this may take a while base on your internet speed."
+		case `dpkg --print-architecture` in
+		aarch64)
+			archurl="arm64" ;;
+		arm)
+			archurl="armhf" ;;
+		amd64)
+			archurl="amd64" ;;
+		x86_64)
+			archurl="amd64" ;;	
+		i*86)
+			archurl="i386" ;;
+		x86)
+			archurl="i386" ;;
+		*)
+			echo "unknown architecture"; exit 1 ;;
+		esac
+		wget "https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Rootfs/Ubuntu/${archurl}/ubuntu-rootfs-${archurl}.tar.xz" -O $tarball
+	fi
+	cur=`pwd`
+	mkdir -p "$folder"
+	cd "$folder"
+	echo "Decompressing Rootfs, please be patient."
+	proot --link2symlink tar -xJf ${cur}/${tarball}||:
+	cd "$cur"
+fi
+mkdir -p ubuntu-binds
+bin=start-ubuntu.sh
+echo "writing launch script"
+cat > $bin <<- EOM
+#!/bin/bash
+cd \$(dirname \$0)
+## unset LD_PRELOAD in case termux-exec is installed
+unset LD_PRELOAD
+command="proot"
+command+=" --link2symlink"
+command+=" -0"
+command+=" -r $folder"
+if [ -n "\$(ls -A ubuntu-binds)" ]; then
+    for f in ubuntu-binds/* ;do
+      . \$f
+    done
+fi
+command+=" -b /dev"
+command+=" -b /proc"
+command+=" -b ubuntu-fs/root:/dev/shm"
+## uncomment the following line to have access to the home directory of termux
+#command+=" -b /data/data/com.termux/files/home:/root"
+## uncomment the following line to mount /sdcard directly to / 
+#command+=" -b /sdcard"
+command+=" -w /root"
+command+=" /usr/bin/env -i"
+command+=" HOME=/root"
+command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
+command+=" TERM=\$TERM"
+command+=" LANG=C.UTF-8"
+command+=" /bin/bash --login"
+com="\$@"
+if [ -z "\$1" ];then
+    exec \$command
+else
+    \$command -c "\$com"
+fi
+EOM
+
+echo "fixing shebang of $bin"
+termux-fix-shebang $bin
+echo "making $bin executable"
+chmod +x $bin
+echo "removing image for some space"
+rm $tarball
+echo "You can now launch Ubuntu with the ./${bin} script"
+```
+
+Note: If you crash on Android google it!
+
+Note: PHP8 is not avaliable for current Termux.
+
+# PHP8.0 In Ubuntu 20
+(also avaliable at android Ubuntu)
+
+1. List existing PHP packages
+
+```bash
+dpkg -l | grep php | tee packages.txt
+```
+
+2. Add ondrej/php PPA
+
+```bash
+apt-get install sudo
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+```
+Steps above will add the PPA as a source of packages, that contains all PHP packages and their dependencies such as argon2 and libzip.
+
+3. Install PHP 8.0 and extensions
+
+All PHP 8.0 packages follow php8.0-NAME pattern, and php8.0-common package includes a sensible set default of extensions (such as `php8.0-).
+
+```bash
+sudo apt install php8.0
+#sudo apt install php8.0-common php8.0-cli -y
+```
+ 
+Proof of PHP8 run  :
+
+```bash
+php -v # Show PHP version.
+php -m # Show PHP modules loaded.
+```
+4. Add Afditional Extension
+
+```bash
+sudo apt install php8.0-{bz2,curl,intl,mysql,readline,xml}
+```
+
+5. Restart Apache Server
+
+```bash
+sudo service apache2 restart
+```
+
+6. Remove all Old Version of PHP
+
+```bash
+sudo apt purge '^php7.4.*'
+```
+
+# Apache2 80 Host Problem In Ubuntu (Sloved!)
+
+1. To apache2 run :
+
+```bash
+cd /etc/apache2
+```
+
+2. Edit `ports.conf`
+
+from
+```conf
+# If you just change the port or add more ports here, you will likely>
+# have to change the VirtualHost statement in
+# /etc/apache2/sites-enabled/000-default.conf
+
+Listen 80
+
+<IfModule ssl_module>
+        Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 443
+</IfModule>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+to
+```conf
+# If you just change the port or add more ports here, you will likely>
+# have to change the VirtualHost statement in
+# /etc/apache2/sites-enabled/000-default.conf
+
+Listen 8080
+
+<IfModule ssl_module>
+        Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 443
+</IfModule>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+3. Save and then run :
+
+```bash
+cd /etc/apache2/sites-enabled
+```
+4. Open `000-default.conf`
+
+from
+```conf
+VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to                  # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+       # ServerName localhost
+        ServerAdmin webmaster@localhost                                                  DocumentRoot /var/www/
+        # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+        # error, crit, alert, emerg.                                                            # It is also possible to configure the loglevel for particular
+        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        # For most configuration files from conf-available/, which are
+        # enabled or disabled at a global level, it is possible to
+        # include a line for only one particular virtual host. For example the
+        # following line enables the CGI configuration for this host only
+        # after it has been globally disabled with "a2disconf".
+        #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+
+TO
+```conf
+VirtualHost *:8080>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to                  # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+        ServerName localhost
+        ServerAdmin webmaster@localhost                                                         DocumentRoot /var/www/
+        # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+        # error, crit, alert, emerg.                                                            # It is also possible to configure the loglevel for particular
+        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        # For most configuration files from conf-available/, which are
+        # enabled or disabled at a global level, it is possible to
+        # include a line for only one particular virtual host. For example the
+        # following line enables the CGI configuration for this host only
+        # after it has been globally disabled with "a2disconf".
+        #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+And create php file at 
+`cd /var/www`
+and 
+create `index.php` and test code write and start `apache server`
+
+```bash
+sudo service apache2 restart
+```
+and Open in browser and check at `localhost:8080`.
+
+# Setup Apache Server In Ubuntu
+
+Search `var/www/html` and and change TO
+
+```conf
+<Directory /var/www/>                            Options Indexes FollowSymLinks           AllowOverride None                       Require all granted              </Directory>
+```
+
+add Servername at the end 
+
+```conf
+ServerName localhost
+```
+and go to `/etc/apache2/sites-enabled` Edit `000-default.conf` 
+
+```conf
+<VirtualHost *:8080>
+        # The ServerName directive sets the request scheme>
+        # the server uses to identify itself. This is used>
+        # redirection URLs. In the context of virtual host>
+        # specifies what hostname must appear in the reque>
+        # match this virtual host. For the default virtual>
+        # value is not decisive as it is used as a last re>
+        # However, you must set it for any further virtual>
+        ServerName localhost
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/
+        # Available loglevels: trace8, ..., trace1, debug,>
+        # error, crit, alert, emerg.
+        # It is also possible to configure the loglevel fo>        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log                       CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        # For most configuration files from conf-available>
+        # enabled or disabled at a global level, it is pos>
+        # include a line for only one particular virtual h>
+        # following line enables the CGI configuration for>
+        # after it has been globally disabled with "a2disc>
+        #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+also change `ports.conf`
+```conf
+Listen 8080                                 
+<IfModule ssl_module>
+        Listen 443                          </IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 443                          </IfModule>
+```
+
+----
 ## Android and Linux (Ubuntu 20)
 
 1. Start MySQL Server
