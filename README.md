@@ -1,22 +1,37 @@
-# PHP Setup In Linux
- This is set up guide for WEB DEVELOPEMENT!
- 
+# PHP Setup In Ubuntu20 And  Termux
+
+> Developement Environment Setup Guide.
+
+**Author** - [Aung Myat Moe](https://github.com/amm834)
+
+**Contribute?** - Fork And Pull Request
+
+----
+
 # Platforms
 - Android (Using Termux Application)
 - Ubuntu 20 LTS
 
+----
+
 # Table Of Contents
-## Andriod
 1. [PHP Setup](#php-a)
 1. [MYSQL Setup](#mysql-a)
 1. [CREATE MYSQL PRIVILIAGE](#mysql-priv)
+1. [UBUNTU in Termux](#ubuntu-in-termux)
+1. [Install Apache Server](#apache-server)
+1. [Install PHP8 In Ubuntu](#php-ubuntu)
+1. [Apache2 80 Host Problem In Ubuntu](#ubuntu-apache-solved)
+1. [LICENSE](#mit)
+
+----
 
 # Andriod Platform
 
  Install Termux From Google Play Store or F-Droid first.
  (Seyup in Termux is PHP-7.4)
  
-1. Fresher Installtion
+1. Fresher Installtion Of Termux
 
 ```bash
 apt update && apt upgrade -y
@@ -40,7 +55,7 @@ pkg install php-apache
 ```bash
 php -v 
 ```
-5. Install Apache2
+5. <a name="apache-server">Install Apache2</a>
 
 ```bash
 pkg install apache2
@@ -237,7 +252,7 @@ This setup is to access database from PHP 'username'.
 # Ubuntu Linux
 Installtion should done it yourself!
 
-## UBTNU Installtion In Termux (skip on linux)
+## <a name="ubuntu-in-termux">Ubuntu Installtion In Termux (skip on linux)</a>
 
 Create new file `ubuntu.sh` and  `grant it` by `chmod +x ubtnu.sh
 Copy following and run `./ubuntu.sh` and wait some mimute. ⏱️
@@ -344,7 +359,7 @@ Note: If you crash on Android google it!
 
 Note: PHP8 is not avaliable for current Termux.
 
-# PHP8.0 In Ubuntu 20
+# <a name="php-ubuntu">PHP8.0 In Ubuntu 20</a>
 (also avaliable at android Ubuntu)
 
 1. List existing PHP packages
@@ -396,7 +411,7 @@ sudo service apache2 restart
 sudo apt purge '^php7.4.*'
 ```
 
-# Apache2 80 Host Problem In Ubuntu (Sloved!)
+# <a name="ubuntu-apache-solved"> Apache2 80 Host Problem In Ubuntu (Sloved!)</a>
 
 1. To apache2 run :
 
@@ -599,7 +614,7 @@ Note:SQL statement is end with `;`
 
 Now you can access by `root` username and password is ` ` empty on `port:3306` (default) of mysql.
 
-# LICENCE
+# <a name="mit">LICENSE</a>
 
 ```
 MIT License
