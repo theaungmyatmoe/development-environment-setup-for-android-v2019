@@ -20,6 +20,8 @@
 1. [CREATE MYSQL PRIVILIAGE](#mysql-priv)
 1. [UBUNTU in Termux](#ubuntu-in-termux)
 1. [Install Apache Server](#apache-server)
+1. [Install Nginx (Termux)](#nginx-termux)
+1. [Vim Setup](#vim) (Optional)
 1. [Install PHP8 In Ubuntu](#php-ubuntu)
 1. [Apache2 80 Host Problem In Ubuntu](#ubuntu-apache-solved)
 1. [LICENSE](#mit)
@@ -172,8 +174,102 @@ Note: You can change DocumentRoot directory what you like but don't add `/` end 
 ```conf
 LoadModule rewrite_module libexec/apache2/mod_rewrite.so
 ```
+# <a name="nginx-termux">  Nginx Server Setup In Termux </a>
+
+1. Install Nginx Package
+
+```bash
+pkg install nginx  # Install nginx 
+pkg install php-fpm #Install Fast-cgi for PHP with nginx
+```
+
+2. Setup PHP FPM
+```bash
+cd /data/data/com.termux/files/usr/etc/php-fpm.d
+vim www.conf # Open File
+```
+----
+
+# <a name="vim">Vim  Setup</a>
+
+##Setup Vim (If you installed Skip This)
+
+```bash
+pkg install vim 
+vim
+```
+ <kbd>ESC<kbd> and Type `:set number`.
+ 
+ -----
+ 
+ 3. When you opened `www.conf` and go to line **36** and delete it and enter following
+ 
+```conf
+listen = 127.0.0.1:9000
+```
+and **Save It**. To save <kbd>ESC</kbd> and type `:wq`.
+**Note** About line is to setup with nginx!
+
+4. Go to nginx setup path.
+
+```bash
+cd 
+cd  /data/data/com.termux/files/usr/etc/nginx
+vim nginx.conf # Open Nginx Default Config File
+```
+
+6. And go to line **36** that should like below
+
+```conf
+listen8080;                   server_name  localhost;
+```
+And go line **44**
+
+```conf
+root   /data/data/com.termux/files/usr/share/nginx/html;  index  index.php index.html;
+```
+Added **index.php** like above.
+
+And paste below command at the end of `location \ {……}`.
+
+```conf
+
+location ~ \.php$ {
+
+  root          /data/data/com.termux/files/usr/share/nginx/html;
+  
+  fastcgi_pass   127.0.0.1:9000;
+  
+  fastcgi_index  index.php;
+  fastcgi_param SCRIPT_FILENAME  /data/data/com.termux/files/usr/share/nginx/html$fast    cgi_script_name;
+  
+  include fastcgi_params;       
+}
+
+```
+And save it.
+
+7. Reload Nginx Server
+
+```bash
+nginx -s reload #reload Server if you started!
+php-fpm # start PHP-fpm to run php scripts
+nginx # start server
+```
+
+and search `http://localhost:8080/` and you will see `Thant you bla bla!`
+8. To edit php files go to 
+
+```bash
+cd 
+cd /data/data/com.termux/files/usr/share/nginx/html
+echo "<?php echo "Server Engine X "; ?>" > index.php
+```
+Go to **localhost** at browser and see result again.
 
 # <a name="mysql-a">Install Mysql Server (Mariadb In Termux)</a>
+
+-----
 
 1. Install Mariadb
 
