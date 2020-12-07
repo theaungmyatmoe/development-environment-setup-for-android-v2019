@@ -25,7 +25,7 @@
 1. [CREATE MYSQL PRIVILIAGE](#mysql-priv)
 1. [UBUNTU in Termux](#ubuntu-in-termux)
 1. [Install Apache Server](#apache-server)
-1.[PHP8 Setup](#php8-a)(Termux Avaliable)
+1. [PHP8 Setup](#php8-a)(Termux Avaliable)
 1. [Install Nginx (Termux)](#nginx-termux)
 1. [Vim Setup](#vim) (Optional)
 1. [Install PHP8 In Ubuntu](#php-ubuntu)
