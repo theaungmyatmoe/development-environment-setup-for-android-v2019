@@ -202,10 +202,12 @@ pkg install php-fpm #Install Fast-cgi for PHP with nginx
 
 2. Setup PHP FPM
 ```bash
+
 cd /data/data/com.termux/files/usr/etc/php-fpm.d
-vim www.conf # Open File
+vim www.conf 
+# Open File
 ```
-----
+-----
 
 # <a name="vim">Vim  Setup</a>
 
