@@ -1,25 +1,31 @@
-# PHP Setup In Ubuntu20 And  Termux
+# LAMP and LEMP Stacks Setup Guide
 
-> Developement Environment Setup Guide.
+> **LAMP** and **LEMP** Stacks Setup at **UBUNTU** (v-20.4) and **Android**(X)
 
 **Author** - [Aung Myat Moe](https://github.com/amm834)
 
-**Contribute?** - Fork And Pull Request
+**Want to Contribute?** - Fork And Pull Request!
 
 ----
 
-# Platforms
-- Android (Using Termux Application)
-- Ubuntu 20 LTS
+# Requirements
+## Android
+- Android version up to 7.0 (I am using Andriod X)
+
+## Linux (UBUNTU 20.4)
+- Linux 
+- Ubuntu Avaliable for Andriod (Shell Script Avaliable)
 
 ----
 
 # Table Of Contents
+
 1. [PHP Setup](#php-a)
 1. [MYSQL Setup](#mysql-a)
 1. [CREATE MYSQL PRIVILIAGE](#mysql-priv)
 1. [UBUNTU in Termux](#ubuntu-in-termux)
 1. [Install Apache Server](#apache-server)
+1.[PHP8 Setup](#php8-a)(Termux Avaliable)
 1. [Install Nginx (Termux)](#nginx-termux)
 1. [Vim Setup](#vim) (Optional)
 1. [Install PHP8 In Ubuntu](#php-ubuntu)
@@ -31,9 +37,9 @@
 # Andriod Platform
 
  Install Termux From Google Play Store or F-Droid first.
- (Seyup in Termux is PHP-7.4)
+ (Setup in Termux is PHP-7.4)
  
-1. Fresher Installtion Of Termux
+1. Installtion Packages In Termux
 
 ```bash
 apt update && apt upgrade -y
@@ -52,7 +58,7 @@ pkg install php
 pkg install php-apache
 ```
 
-4. Poof For PHP
+4. Poof PHP is avaliable.or not by running
 
 ```bash
 php -v 
@@ -81,18 +87,29 @@ cd apache2
 pkg install nano #to install code editor
 nano httpd.conf
 ```
-9. Added PHP7 Module at the end `httpd.conf`
+9. Added PHP7 Module at the end of file `httpd.conf`
 
 ```conf
-</IfModule>
-
 LoadModule php7_module libexec/apache2/libphp7.so
-<FilesMatch \.php$>
+<FilesMatch \.php$> 
    SetHandler application/x-httpd-php
 </FilesMatch>
 <IfModule dir_module>
     DirectoryIndex index.php
 </IfModule>
+```
+
+9. <a name="php8-a">PHP 8 In Apache</a>
+
+```conf
+LoadModule php_module libexec/apache2/libphp.so
+<FilesMatch \.php$> 
+   SetHandler application/x-httpd-php
+</FilesMatch>
+<IfModule dir_module>
+    DirectoryIndex index.php
+</IfModule>
+
 ```
 
 10. Find `worker` Module of PHP
@@ -108,7 +125,7 @@ and comment it!Like below :
 #LoadModule mpm_worker_module libexec/apache2/mod_mpm_worker.so
 ```
 
-11. Find `prefork` Module for PHP7 to load PHP7 by [Arch Linux Wiki Page](https://wiki.archlinux.org/index.php/Apache_HTTP_server#PHP)
+11. Find `prefork` Module for PHP7 to load PHP7.[Arch Linux Wiki Page](https://wiki.archlinux.org/index.php/Apache_HTTP_server#PHP)
 You will see like :
 
 ```conf
@@ -257,7 +274,9 @@ php-fpm # start PHP-fpm to run php scripts
 nginx # start server
 ```
 
-and search `http://localhost:8080/` and you will see `Thant you bla bla!`
+and search
+`http://localhost:8080/` and you will see `Thank you bla bla!`
+
 8. To edit php files go to 
 
 ```bash
@@ -267,9 +286,11 @@ echo "<?php echo "Server Engine X "; ?>" > index.php
 ```
 Go to **localhost** at browser and see result again.
 
+(PHP8 is Avaliable Now ❤️)
+-----
+
 # <a name="mysql-a">Install Mysql Server (Mariadb In Termux)</a>
 
------
 
 1. Install Mariadb
 
@@ -278,6 +299,7 @@ pkg install mariadb
 mysql # Of You get errors
 ```
 like
+
 ```bash
 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/data/data/com.termux/files/usr/tmp/mysqld.sock' (2)
 ```
@@ -285,6 +307,7 @@ ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/data/da
 You can start mysql server manually by opening `mysql.sh`.
 
 2. Go to
+
 ```bash
 cd
 cd $PREFIX
@@ -292,16 +315,20 @@ cd etc
 cd init.d
 ls #you will see `mysql` file that is executable binary file!
 ```
-3. Start Server like
+3. Start Server
+
+run
 
 ```bash
 ./mysql status #check status running or not
 ./mysql start # start server
 mysql #you will login into mariadb
 ```
+
 like
 
 ```bash
+#Output
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 4
 Server version: 10.5.8-MariaDB MariaDB Server
@@ -311,10 +338,11 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 MariaDB [(none)]>
+
 ```
 You are now loged in!
 <kbd>CTRL</kbd>+<kbd>D</kbd> to exit! You can also type `exit` .
-I prefer CLI :3
+I prefer CLI 😁
 
 When you stop like `./mysql stop` you will get errors like
 
@@ -323,6 +351,7 @@ ERROR! MariaDB server process #4215 is not running!
 ```
 
 You can see all process of mysql run  :
+
 ```bash
 find 'etc' | grep 'mysql'
 ```
@@ -331,27 +360,25 @@ Stop process by running :
 ```bash
 stop mysql
 ```
-if not work
+
+If you want to start again?Run
 
 ```bash
-kill $(ps aux | grep '[m]ysql' | awk '{print $2}')
+mysqld_safe #to start
+stop mysql #to stop
 ```
-Note : If you want to stop other process change `[m]sql` to `[p]hp` if PHP! by [Easy Engine](https://easyengine.io/tutorials/linux/kill-all-processes/?amp)
-
-and If you start again and by stopping `stop mysql` you need to run `mysqld_safe` .
-Open new session and type `mysql` for Mysql CLI.
 
 # <a name="mysql-priv">Create MYSQL PRIVILIAGE</a>
 
 This setup is to access database from PHP 'username'.
 
-# Ubuntu Linux
+# Ubuntu (v-20.4 LTS)
 Installtion should done it yourself!
 
 ## <a name="ubuntu-in-termux">Ubuntu Installtion In Termux (skip on linux)</a>
 
 Create new file `ubuntu.sh` and  `grant it` by `chmod +x ubtnu.sh
-Copy following and run `./ubuntu.sh` and wait some mimute. ⏱️
+Copy following and run `./ubuntu.sh` and wait some minute. ⏱️
 When complete  run `./ubuntu.sh` and autologin to ubuntu like :
 
 ```bash
@@ -365,8 +392,12 @@ pkg install wget openssl-tool proot -y && hash -r && wget https://raw.githubuser
 ```
 
 or
+Download File and make executable and run.
 
-Copy Below and run:
+[Download Shell Script File](start-ubuntu.sh)
+
+Copy Below and save as a file and make it executable.And run.
+
 ```bash
 #!/data/data/com.termux/files/usr/bin/bash
 folder=ubuntu-fs
@@ -451,9 +482,9 @@ rm $tarball
 echo "You can now launch Ubuntu with the ./${bin} script"
 ```
 
-Note: If you crash on Android google it!
+**Note** If you crash on Android ``GOOGLE it yourself!
 
-Note: PHP8 is not avaliable for current Termux.
+**Note** PHP8 is not avaliable for current Termux.
 
 # <a name="php-ubuntu">PHP8.0 In Ubuntu 20</a>
 (also avaliable at android Ubuntu)
@@ -464,7 +495,7 @@ Note: PHP8 is not avaliable for current Termux.
 dpkg -l | grep php | tee packages.txt
 ```
 
-2. Add ondrej/php PPA
+2. Add `ondrej/php PPA`
 
 ```bash
 apt-get install sudo
@@ -476,20 +507,21 @@ Steps above will add the PPA as a source of packages, that contains all PHP pack
 
 3. Install PHP 8.0 and extensions
 
-All PHP 8.0 packages follow php8.0-NAME pattern, and php8.0-common package includes a sensible set default of extensions (such as `php8.0-).
+All PHP 8.0 packages follow php8.0-NAME pattern, and php8.0-common package includes a sensible set default of extensions (such as `php8.0`).
 
 ```bash
 sudo apt install php8.0
 #sudo apt install php8.0-common php8.0-cli -y
 ```
  
-Proof of PHP8 run  :
+Proof of PHP8 run 
 
 ```bash
 php -v # Show PHP version.
 php -m # Show PHP modules loaded.
 ```
-4. Add Afditional Extension
+
+4. Add Additional Extension
 
 ```bash
 sudo apt install php8.0-{bz2,curl,intl,mysql,readline,xml}
@@ -507,6 +539,8 @@ sudo service apache2 restart
 sudo apt purge '^php7.4.*'
 ```
 
+-----
+
 # <a name="ubuntu-apache-solved"> Apache2 80 Host Problem In Ubuntu (Sloved!)</a>
 
 1. To apache2 run :
@@ -518,6 +552,7 @@ cd /etc/apache2
 2. Edit `ports.conf`
 
 from
+
 ```conf
 # If you just change the port or add more ports here, you will likely>
 # have to change the VirtualHost statement in
@@ -536,6 +571,7 @@ Listen 80
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 ```
 to
+
 ```conf
 # If you just change the port or add more ports here, you will likely>
 # have to change the VirtualHost statement in
@@ -553,7 +589,8 @@ Listen 8080
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 ```
-3. Save and then run :
+
+3. Save and then run
 
 ```bash
 cd /etc/apache2/sites-enabled
@@ -561,6 +598,7 @@ cd /etc/apache2/sites-enabled
 4. Open `000-default.conf`
 
 from
+
 ```conf
 VirtualHost *:80>
         # The ServerName directive sets the request scheme, hostname and port that
@@ -591,6 +629,7 @@ VirtualHost *:80>
 ```
 
 TO
+
 ```conf
 VirtualHost *:8080>
         # The ServerName directive sets the request scheme, hostname and port that
@@ -621,6 +660,7 @@ VirtualHost *:8080>
 ```
 And create php file at 
 `cd /var/www`
+
 and 
 create `index.php` and test code write and start `apache server`
 
@@ -642,7 +682,9 @@ add Servername at the end
 ```conf
 ServerName localhost
 ```
-and go to `/etc/apache2/sites-enabled` Edit `000-default.conf` 
+and go to
+
+`/etc/apache2/sites-enabled` Edit `000-default.conf` 
 
 ```conf
 <VirtualHost *:8080>
@@ -684,6 +726,7 @@ Listen 8080
 ```
 
 ----
+
 ## Android and Linux (Ubuntu 20)
 
 1. Start MySQL Server
@@ -695,20 +738,25 @@ mysqld_safe
 sudo service mysql start
 ```
 and then run
+
 ```bash
 mysql
 # Output
 # MariaDB [(none)]> SQL Here
 ```
 2. Type SQL
+
 ```sql
 CREATE USER 'root' IDENTIFIED BY '';
 GRANT ALL ON db.* TO root@localhost IDENTIFIED BY '';
 FLUSH PRIVILEGES;
 ```
+
 Note:SQL statement is end with `;`
 
 Now you can access by `root` username and password is ` ` empty on `port:3306` (default) of mysql.
+
+----
 
 # <a name="mit">LICENSE</a>
 
