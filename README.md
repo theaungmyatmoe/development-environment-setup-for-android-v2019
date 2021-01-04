@@ -20,21 +20,7 @@
 
 Download **Termux** app via Google Play or Other App Stores.
 
-<<<<<<< HEAD
-Via Google Play
-=======
-1. [PHP Setup](#php-a)
-1. [MYSQL Setup](#mysql-a)
-1. [CREATE MYSQL PRIVILIAGE](#mysql-priv)
-1. [UBUNTU in Termux](#ubuntu-in-termux)
-1. [Install Apache Server](#apache-server)
-1. [PHP8 Setup](#php8-a)(Termux Avaliable)
-1. [Install Nginx (Termux)](#nginx-termux)
-1. [Vim Setup](#vim) (Optional)
-1. [Install PHP8 In Ubuntu](#php-ubuntu)
-1. [Apache2 80 Host Problem In Ubuntu](#ubuntu-apache-solved)
-1. [LICENSE](#mit)
->>>>>>> ea1cbeda2b1b287b44cde92fc0978303dbf41ef9
+# Via Google Play
 
 https://play.google.com/store/apps/details?id=com.termux
 
