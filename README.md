@@ -331,3 +331,8 @@ mkdir -p $PREFIX/data/db
 mongod # -> to start mongodb service
 mongo
 ```
+
+# Old Version Avaliable
+
+> This readme include setup LAMP in UBUNTU v-20.
+[README v-1](READMEv1.md)
