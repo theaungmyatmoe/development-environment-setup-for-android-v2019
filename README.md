@@ -209,3 +209,64 @@ apachectl start
 apachectl restart
 # Go Browser and test again.
 ```
+
+# MySQL (Mariadb) Installation
+
+```bash
+pkg install mariadb
+Y
+```
+Start Mariadb
+```bash
+cd '/data/data/com.termux/files/usr' ; /data/data/com.termux/files/usr/bin/mysqld_safe --datadir='/data/data/com.termux/files/usr/var/lib/mysql'
+```
+
+If you want to test ?
+
+```bash
+pkg install perl
+cd '/data/data/com.termux/files/usr/mysql-test' ; perl mysql-test-run.pl
+```
+
+**If Server is not start above methods?**
+
+```bash
+mysqld_safe  -u root
+```
+
+and `Open new session`.
+
+```bash
+mysql
+# Type line by line
+MariaDB [(none)]> CREATE USER 'root' IDENTIFIED BY '';
+MariaDB [(none)]> GRANT ALL ON db.* TO root@localhost IDENTIFIED BY '';
+MariaDB [(none)]> FLUSH PRIVILEGES;
+```
+**ctrl+d** exist from shell.
+
+# Stop Mariadb
+
+Show all process
+
+```bash
+ps aux | grep mysqld
+ps aux | grep mysql
+```
+
+Kill process
+
+```bash
+kill $(ps aux | grep '[m]ysql' | awk '{print $2}')
+```
+
+- The `ps` gives you the list of all the processes.
+- The `grep` filters that based on your search string,` [p] `is a trick to stop you picking up the actual `grep` process itself.
+- The `awk` just gives you the second field of each line, which is the `PID`.
+- The`$(x)` construct means to execute `x` then take its output and put it on the command line. The output of that `ps` pipeline inside that construct above is the list of process IDs so you end up with a command like `kill 1234 1122 7654`.
+
+Detail Here
+
+https://medium.com/@vandersonramos/kill-all-nginx-php-mysql-or-any-kind-of-processes-you-need-f5622d02d367
+
+https://stackoverflow.com/questions/3510673/find-and-kill-a-process-in-one-line-using-bash-and-regex
