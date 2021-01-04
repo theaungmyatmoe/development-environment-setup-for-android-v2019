@@ -2,27 +2,34 @@
 
 > This thread will use TERMUX application.
 
-**Author** - [Aung Myat Moe](https://github.com/amm834)
+**Author** ~ [Aung Myat Moe](https://github.com/amm834)
 
 # Requitrments
 
 - Android Phone
 - Good understand in basic Linux /Unix commmands
 
-# Contents
+# Table of Contents
 
 - Download Termux
 - Basic Installation
 - Setup
--
+ - Install ZSH Shell with OhMyZSH Themes
+- Setup LAMP
+ - Composer Installation
+ - Apache Web Server Installation
+ - Apache and PHP Setup
+   - Restart Server
+ - MySQL (Mariadb) Installation
+   - Stop Mariadb
 
 # Download Termux
 
 Download **Termux** app via Google Play or Other App Stores.
 
-# Via Google Play
+- Via Google Play
 
-https://play.google.com/store/apps/details?id=com.termux
+[Download Termux](https://play.google.com/store/apps/details?id=com.termux)
 
 **Note** Your Android version should have at least 7.0.
 
@@ -270,3 +277,57 @@ Detail Here
 https://medium.com/@vandersonramos/kill-all-nginx-php-mysql-or-any-kind-of-processes-you-need-f5622d02d367
 
 https://stackoverflow.com/questions/3510673/find-and-kill-a-process-in-one-line-using-bash-and-regex
+
+# MEVN Installation
+
+- Node JS Installation
+- Vue Global CLI Installation
+- Nodemon Global CLI Installation
+
+## Nodejs And NPM Installation
+
+```bash
+pkg install nodejs
+Y
+```
+
+Test -
+
+```bash
+node -v
+npm -v
+```
+
+## Vue Global CLI Installation
+
+```bash
+npm install -g @vue/cli
+```
+
+## Nodemon Global CLI Installation
+
+```bash
+npm install -g nodemon
+```
+
+## Nodemon testing?
+Create node server and run `nodemon fileName.js`
+
+## MongoDB Installation
+
+MongoDB is not officially support by termux.So,we will use third party library.
+
+```bash
+pkg install wget
+wget https://its-pointless.github.io/setup-pointless-repo.sh
+
+sh setup-pointless-repo.sh
+
+pkg upgrade
+pkg install mongodb
+Y
+
+mkdir -p $PREFIX/data/db
+mongod # -> to start mongodb service
+mongo
+```
