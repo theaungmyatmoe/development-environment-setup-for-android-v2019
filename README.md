@@ -4,6 +4,13 @@
 
 **Author** ~ [Aung Myat Moe](https://github.com/amm834)
 
+# Recommmend For Vue
+
+> This `Tricks` will show you amazing things that
+you are very hard to make.
+
+[Vue Tricky Stuffs](VueTrickyStuff.md)
+
 # Requitrments
 
 - Android Phone
