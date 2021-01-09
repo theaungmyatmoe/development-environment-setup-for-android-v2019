@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Author ~ Aung Myat Moe(@amm834)
+
 if [[ "$#" -eq 1 ]]; then
 case $1 in
  'start')
