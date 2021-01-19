@@ -281,9 +281,9 @@ kill $(ps aux | grep '[m]ysql' | awk '{print $2}')
 
 Detail Here
 
-https://medium.com/@vandersonramos/kill-all-nginx-php-mysql-or-any-kind-of-processes-you-need-f5622d02d367
+[Medium Artical](https://medium.com/@vandersonramos/kill-all-nginx-php-mysql-or-any-kind-of-processes-you-need-f5622d02d367)
 
-https://stackoverflow.com/questions/3510673/find-and-kill-a-process-in-one-line-using-bash-and-regex
+[StackOverFlow](https://stackoverflow.com/questions/3510673/find-and-kill-a-process-in-one-line-using-bash-and-regex)
 
 # MEVN Installation
 
