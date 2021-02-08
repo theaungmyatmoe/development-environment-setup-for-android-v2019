@@ -1,4 +1,3 @@
-GNU nano 5.5         service
 #!/usr/bin/env bash
 if [[ "$#" -eq 1 ]]; then
 case $1 in
