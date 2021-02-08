@@ -252,10 +252,10 @@ and `Open new session`.
 
 ```bash
 mysql
-# Type line by line
-MariaDB [(none)]> CREATE USER 'root' IDENTIFIED BY '';
-MariaDB [(none)]> GRANT ALL ON db.* TO root@localhost IDENTIFIED BY '';
-MariaDB [(none)]> FLUSH PRIVILEGES;
+
+CREATE USER 'root' IDENTIFIED BY '';
+GRANT ALL ON db.* TO root@localhost IDENTIFIED BY '';
+FLUSH PRIVILEGES;
 ```
 **ctrl+d** exist from shell.
 
