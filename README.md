@@ -1,3 +1,8 @@
+**This repo is changed to** https://github.com/amm834/Development-Environment-Setup-For-Android.
+
+------
+
+
 # Setup WEB Dev Environment in Android
 
 > This thread will use TERMUX application.
